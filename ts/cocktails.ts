@@ -17,18 +17,15 @@ const inputCocktails = getElementCocktails(
 ) as HTMLInputElement;
 
 const showDrinks = async (url: string) => {
-  //fetch drinks
   const cocktailsData = await fetchDrinks(url);
-
-  //display drinks
   const sectionCocktails = await displayDrinks(cocktailsData);
+  if (sectionCocktails) setSingleDrink(sectionCocktails);
 };
 
 const displayDrinks = async ({ drinks }: any) => {
   const section = getElementCocktails(".section-center") as HTMLDivElement;
   const title = getElementCocktails(".title") as HTMLHeadingElement;
 
-  /* if no drinks available */
   if (!drinks) {
     hideLoading();
     title.textContent = "Sorry, no drinks matched your search";
@@ -70,6 +67,14 @@ const showLoading = () => {
 
 const hideLoading = () => {
   loading?.classList.add("hide-loading");
+};
+
+const setSingleDrink = (section: any) => {
+  section.addEventListener("click", function (e: Event) {
+    // e.preventDefault();
+    const id = (e.target as HTMLElement).parentElement?.dataset.id as string;
+    localStorage.setItem("drink", id);
+  });
 };
 
 formCocktails?.addEventListener("keyup", function (e: Event) {

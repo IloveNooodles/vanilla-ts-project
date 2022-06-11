@@ -11,15 +11,14 @@ const loading = getElementCocktails(".loading");
 const formCocktails = getElementCocktails(".search-form");
 const inputCocktails = getElementCocktails('[name="drink"]');
 const showDrinks = async (url) => {
-    //fetch drinks
     const cocktailsData = await fetchDrinks(url);
-    //display drinks
     const sectionCocktails = await displayDrinks(cocktailsData);
+    if (sectionCocktails)
+        setSingleDrink(sectionCocktails);
 };
 const displayDrinks = async ({ drinks }) => {
     const section = getElementCocktails(".section-center");
     const title = getElementCocktails(".title");
-    /* if no drinks available */
     if (!drinks) {
         hideLoading();
         title.textContent = "Sorry, no drinks matched your search";
@@ -58,6 +57,13 @@ const showLoading = () => {
 };
 const hideLoading = () => {
     loading?.classList.add("hide-loading");
+};
+const setSingleDrink = (section) => {
+    section.addEventListener("click", function (e) {
+        // e.preventDefault();
+        const id = e.target.parentElement?.dataset.id;
+        localStorage.setItem("drink", id);
+    });
 };
 formCocktails?.addEventListener("keyup", function (e) {
     e.preventDefault();
